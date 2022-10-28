@@ -1,0 +1,36 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+	
+
+
+
+  if Vagrant.has_plugin? "vagrant-vbguest"
+    config.vbguest.no_install  = true
+    config.vbguest.auto_update = false
+    config.vbguest.no_remote   = true
+  end
+
+  config.vm.define :nodo1Cluster do |nodo1Cluster|
+    nodo1Cluster.vm.box = "bento/ubuntu-20.04"
+    nodo1Cluster.vm.network :private_network, ip: "192.168.100.3"
+    nodo1Cluster.vm.provision "shell", path: "scriptnodo.sh"
+    nodo1Cluster.vm.hostname = "nodo1Cluster"
+  end
+
+  config.vm.define :nodo2Cluster do |nodo2Cluster|
+    nodo2Cluster.vm.box = "bento/ubuntu-20.04"
+    nodo2Cluster.vm.network :private_network, ip: "192.168.100.4"
+    nodo2Cluster.vm.provision "shell", path: "scriptnodo.sh"
+    nodo2Cluster.vm.hostname = "nodo2Cluster"
+  end
+
+
+  config.vm.define :servidorCluster do |servidorCluster|
+    servidorCluster.vm.box = "bento/ubuntu-20.04"
+    servidorCluster.vm.network :private_network, ip: "192.168.100.2"
+    servidorCluster.vm.provision "shell", path: "scriptSerCluster.sh"
+    servidorCluster.vm.hostname = "servidorCluster"
+  end
+end
